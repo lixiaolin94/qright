@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "QRight 右键扫码",
+  "short_name": "QRight",
+  "version": "0.1.0",
+  "description": "右键网页上的二维码图片，直接访问或复制解码内容。",
+  "permissions": ["contextMenus", "offscreen", "clipboardWrite", "scripting", "activeTab", "search"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
