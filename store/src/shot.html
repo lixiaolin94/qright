@@ -1,0 +1,111 @@
+<!doctype html>
+<!-- 商店截图模板。用法：shot.html#scene=menu&lang=zh（scene: menu | copy | tile） -->
+<html><head><meta charset="utf-8">
+<style>
+  :root { --blue:#1877f2; --ink:#1d1d1f; --muted:#6e6e73; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { width:1280px; height:800px; overflow:hidden; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif; color:var(--ink);
+         background:radial-gradient(1200px 700px at 85% 10%, #dbe8ff 0%, #f3f6fb 55%, #eef1f6 100%); }
+  .hero { position:absolute; left:72px; top:0; bottom:0; width:380px; display:flex; flex-direction:column; justify-content:center; }
+  .brand { display:flex; align-items:center; gap:12px; font-weight:700; font-size:22px; margin-bottom:36px; }
+  .brand img { width:44px; height:44px; }
+  h1 { font-size:46px; line-height:1.18; letter-spacing:-.5px; font-weight:700; }
+  h1 em { font-style:normal; color:var(--blue); }
+  .sub { margin-top:20px; font-size:19px; line-height:1.6; color:var(--muted); }
+
+  .win { position:absolute; left:500px; top:96px; width:720px; height:608px; border-radius:12px; background:#fff;
+         box-shadow:0 30px 80px rgba(20,40,80,.18), 0 0 0 1px rgba(0,0,0,.06); overflow:hidden; }
+  .chrome { height:76px; background:#e9edf3; border-bottom:1px solid #d6dbe3; }
+  .tabs { height:38px; display:flex; align-items:flex-end; padding-left:84px; position:relative; }
+  .dots { position:absolute; left:16px; top:14px; display:flex; gap:8px; }
+  .dots i { width:12px; height:12px; border-radius:50%; background:#ff5f57; } .dots i:nth-child(2){background:#febc2e} .dots i:nth-child(3){background:#28c840}
+  .tab { height:30px; width:220px; background:#fff; border-radius:9px 9px 0 0; padding:0 14px; font-size:12.5px; display:flex; align-items:center; gap:8px; color:#333; }
+  .tab b { width:14px; height:14px; border-radius:4px; background:#ff7a45; flex:none; }
+  .bar { height:38px; display:flex; align-items:center; padding:0 14px; background:#fff; }
+  .url { flex:1; height:26px; border-radius:13px; background:#f1f3f4; font-size:12.5px; color:#555; display:flex; align-items:center; padding:0 14px; }
+
+  .page { position:relative; padding:34px 44px; height:532px; }
+  .page h2 { font-size:24px; margin-bottom:10px; }
+  .page p { font-size:14px; line-height:1.75; color:#555; width:340px; }
+  .lines i { display:block; height:10px; border-radius:5px; background:#eceef2; margin-top:12px; }
+  .card { position:absolute; left:44px; top:250px; display:flex; gap:18px; align-items:center; }
+  .card img { width:132px; height:132px; padding:8px; background:#fff; border:1px solid #e5e7eb; border-radius:8px; }
+  .card span { font-size:13px; color:#777; line-height:1.6; }
+
+  .menu { position:absolute; width:236px; background:rgba(246,246,248,.98); border-radius:8px; padding:5px;
+          box-shadow:0 12px 36px rgba(0,0,0,.22), 0 0 0 .5px rgba(0,0,0,.22); font-size:13.5px; }
+  .menu div { height:24px; padding:0 10px 0 28px; display:flex; align-items:center; border-radius:5px; position:relative; white-space:nowrap; }
+  .menu hr { border:0; height:1px; background:rgba(0,0,0,.1); margin:5px 8px; }
+  .menu .on { background:var(--blue); color:#fff; }
+  .menu .ico img { position:absolute; left:7px; width:15px; height:15px; border-radius:3px; }
+  .menu .arrow::after { content:"›"; position:absolute; right:10px; font-size:17px; top:0; line-height:23px; }
+  .cursor { position:absolute; width:20px; height:28px; }
+
+  .toast { position:absolute; top:16px; right:16px; max-width:380px; padding:11px 15px; border-radius:10px; background:#1f1f1f; color:#fff;
+           font-size:14px; line-height:1.5; box-shadow:0 8px 28px rgba(0,0,0,.28); word-break:break-all; }
+  .toast b { margin-right:7px; }
+
+  /* 宣传小图 440x280 */
+  body.tile { width:440px; height:280px; background:linear-gradient(135deg,#1877f2,#3d5afe); color:#fff; display:flex; align-items:center; justify-content:center; }
+  .tile-inner { display:flex; align-items:center; gap:22px; }
+  .tile-inner img { width:96px; height:96px; border-radius:22px; box-shadow:0 10px 30px rgba(0,0,0,.25); }
+  .tile-inner h3 { font-size:40px; font-weight:800; letter-spacing:-.5px; }
+  .tile-inner p { font-size:17px; opacity:.92; margin-top:6px; line-height:1.4; }
+</style></head>
+<body>
+<script>
+const p = Object.fromEntries(new URLSearchParams(location.hash.slice(1)));
+const zh = p.lang !== 'en';
+const T = zh ? {
+  menuH: '右键二维码，<br><em>直接访问</em>', menuS: '网页上看到二维码，不用再掏手机扫。右键选「直接访问」，在新标签页打开。',
+  copyH: '一键复制<br><em>解码内容</em>', copyS: '纯文本、口令、Wi-Fi 信息…选「复制内容」直接写进剪贴板。全程本地解码，不上传任何数据。',
+  title: '活动报名', body: '扫描下方二维码填写报名信息，名额有限，先到先得。', scan: '微信 / 浏览器扫码<br>即可报名',
+  tab: '活动报名 - 示例网站', open: '在新标签页中打开图片', save: '将图片存储为…', copyImg: '复制图片', copyAddr: '复制图片地址',
+  inspect: '检查', mOpen: '直接访问', mCopy: '复制内容', copied: '已复制：', tileS: '右键扫码<br>直接访问 · 复制内容',
+} : {
+  menuH: 'Right-click a QR code.<br><em>Open it.</em>', menuS: 'See a QR code on a web page? No need to reach for your phone. Right-click and choose Open.',
+  copyH: 'Copy what’s<br><em>inside</em>', copyS: 'Plain text, codes, Wi-Fi details… choose Copy and it’s on your clipboard. Decoded locally — nothing is uploaded.',
+  title: 'Event Registration', body: 'Scan the QR code below to sign up. Seats are limited — first come, first served.', scan: 'Scan with your phone<br>or right-click it',
+  tab: 'Event Registration - Example', open: 'Open Image in New Tab', save: 'Save Image As…', copyImg: 'Copy Image', copyAddr: 'Copy Image Address',
+  inspect: 'Inspect', mOpen: 'Open', mCopy: 'Copy', copied: 'Copied: ', tileS: 'Right-click QR scanner<br>Open · Copy',
+};
+const URL_ = 'https://github.com/lixiaolin94/qright';
+const cursor = '<svg class="cursor" viewBox="0 0 20 28"><path d="M2 2v21l5.5-5 3.6 8.2 3.4-1.5-3.5-8H18z" fill="#000" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+
+if (p.scene === 'tile') {
+  document.body.className = 'tile';
+  document.body.innerHTML = `<div class="tile-inner"><img src="../../icons/icon128.png"><div><h3>QRight</h3><p>${T.tileS}</p></div></div>`;
+} else {
+  const menu = p.scene === 'menu';
+  document.body.insertAdjacentHTML('beforeend', `
+    <div class="hero">
+      <div class="brand"><img src="../../icons/icon128.png">QRight</div>
+      <h1>${menu ? T.menuH : T.copyH}</h1>
+      <p class="sub">${menu ? T.menuS : T.copyS}</p>
+    </div>
+    <div class="win">
+      <div class="chrome">
+        <div class="tabs"><div class="dots"><i></i><i></i><i></i></div><div class="tab"><b></b>${T.tab}</div></div>
+        <div class="bar"><div class="url">example.com/event</div></div>
+      </div>
+      <div class="page">
+        <h2>${T.title}</h2><p>${T.body}</p>
+        <div class="lines"><i style="width:420px"></i><i style="width:380px"></i><i style="width:300px"></i></div>
+        <div class="card"><img src="qr.svg"><span>${T.scan}</span></div>
+        ${menu ? `
+          <div style="position:absolute;left:150px;top:330px">${cursor}</div>
+          <div class="menu" style="left:158px;top:334px">
+            <div>${T.open}</div><div>${T.save}</div><div>${T.copyImg}</div><div>${T.copyAddr}</div><hr>
+            <div class="on ico arrow"><img src="../../icons/icon32.png">QRight</div><hr><div>${T.inspect}</div>
+          </div>
+          <div class="menu" style="left:390px;top:448px;width:150px">
+            <div class="on">${T.mOpen}</div><div>${T.mCopy}</div>
+          </div>` : `
+          <div class="toast"><b>QRight</b>${T.copied}${URL_}</div>
+          <div style="position:absolute;left:150px;top:330px">${cursor}</div>`}
+      </div>
+    </div>`);
+}
+</script>
+</body></html>

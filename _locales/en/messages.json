@@ -1,0 +1,9 @@
+{
+  "extName": { "message": "QRight - Right-click QR Scanner" },
+  "extDescription": { "message": "Right-click a QR code image on any web page to open or copy its content. Decodes locally, no upload." },
+  "menuOpen": { "message": "Open" },
+  "menuCopy": { "message": "Copy" },
+  "toastCopied": { "message": "Copied: $TEXT$", "placeholders": { "text": { "content": "$1" } } },
+  "toastCopyFailed": { "message": "Copy failed" },
+  "toastNotFound": { "message": "No QR code found" }
+}

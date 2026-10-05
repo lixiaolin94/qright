@@ -29,11 +29,23 @@
 | `offscreen.html` / `offscreen.js` | 离屏文档：用 Canvas 解码图片、写剪贴板 |
 | `lib/jsQR.js` | 二维码解码库（jsQR 1.4.0） |
 | `icons/` | 图标，由 `node scripts/make-icons.mjs` 生成 |
+| `_locales/` | 中英文文案（菜单、提示、扩展名称） |
+| `scripts/package.sh` | 打包上架用的 zip，输出到 `dist/` |
+| `store/` | 商店上架资料：文案与权限说明（`LISTING.md`）、截图与宣传图 |
+| `PRIVACY.md` | 隐私政策 |
 
 ## 取图片的方式
 
 1. 先在离屏文档里直接 `fetch` 图片地址（扩展有 `<all_urls>` 权限，不受跨域限制）。
 2. 如果失败（需要登录 Cookie、有防盗链，或者是 `blob:` 地址），就在图片所在的页面里 `fetch` 一次，转成 data URL 再解码。
+
+## 发布到 Chrome 应用商店
+
+```bash
+./scripts/package.sh
+```
+
+然后按 [store/LISTING.md](store/LISTING.md) 填写后台信息。
 
 ## License
 

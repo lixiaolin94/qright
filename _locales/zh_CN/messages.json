@@ -1,0 +1,9 @@
+{
+  "extName": { "message": "QRight 右键扫码" },
+  "extDescription": { "message": "右键网页上的二维码图片，直接访问或复制解码内容。本地解码，不上传任何数据。" },
+  "menuOpen": { "message": "直接访问" },
+  "menuCopy": { "message": "复制内容" },
+  "toastCopied": { "message": "已复制：$TEXT$", "placeholders": { "text": { "content": "$1" } } },
+  "toastCopyFailed": { "message": "复制失败" },
+  "toastNotFound": { "message": "未识别到二维码" }
+}

@@ -5,8 +5,8 @@ const MENU_COPY = 'qright-copy';
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.removeAll(() => {
     chrome.contextMenus.create({ id: MENU_ROOT, title: 'QRight', contexts: ['image'] });
-    chrome.contextMenus.create({ id: MENU_OPEN, parentId: MENU_ROOT, title: '直接访问', contexts: ['image'] });
-    chrome.contextMenus.create({ id: MENU_COPY, parentId: MENU_ROOT, title: '复制内容', contexts: ['image'] });
+    chrome.contextMenus.create({ id: MENU_OPEN, parentId: MENU_ROOT, title: chrome.i18n.getMessage('menuOpen'), contexts: ['image'] });
+    chrome.contextMenus.create({ id: MENU_COPY, parentId: MENU_ROOT, title: chrome.i18n.getMessage('menuCopy'), contexts: ['image'] });
   });
 });
 
@@ -18,7 +18,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     text = await decodeImage(info, tab);
   } catch (err) {
     console.warn('[QRight] decode failed:', err);
-    toast(tab, '未识别到二维码', 'error');
+    toast(tab, chrome.i18n.getMessage('toastNotFound'), 'error');
     return;
   }
 
@@ -27,10 +27,10 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   } else {
     try {
       await sendToOffscreen({ type: 'copy', text });
-      toast(tab, `已复制：${truncate(text, 80)}`);
+      toast(tab, chrome.i18n.getMessage('toastCopied', truncate(text, 80)));
     } catch (err) {
       console.warn('[QRight] copy failed:', err);
-      toast(tab, '复制失败', 'error');
+      toast(tab, chrome.i18n.getMessage('toastCopyFailed'), 'error');
     }
   }
 });
@@ -125,7 +125,7 @@ async function ensureOffscreen() {
     .createDocument({
       url: 'offscreen.html',
       reasons: ['CLIPBOARD', 'BLOBS'],
-      justification: '解码二维码图片并把结果写入剪贴板',
+      justification: 'Decode QR code images and write the result to the clipboard',
     })
     .finally(() => { creatingOffscreen = null; });
   await creatingOffscreen;
